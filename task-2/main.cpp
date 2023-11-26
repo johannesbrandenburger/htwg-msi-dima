@@ -152,7 +152,8 @@ int main(int, const char **)
     // Possible combinations in System 2 (10 signs):   839299365868340224
     // Possible combinations in System 3 (5-10 signs): 853058371851163264
     // try to crack system 1 (5 signs) with SHA-1: 7738d1909d7dee18196f733d0d508d871d05cc80
-    // current code: WmI42 | progress: 88.5679%         result: MsI42
+    // current code: WmI42 | progress: 88.5679%         result: 
+    // took 30min approx.
 
 
     // crack system 2

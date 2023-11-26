@@ -1,9 +1,11 @@
 #include "sha1.hpp"
 #include <string>
-#include<array>
+#include <array>
 #include <iostream>
 #include <assert.h>
 #include <list>
+#include <vector>
+#include <cmath>
 using namespace std;
 
 
@@ -143,6 +145,15 @@ int main(int, const char **)
     cout << "try to crack system 1 (5 signs) with SHA-1: " << searched_hash_system_1 << endl;
     string result_system_1 = try_crack_hash(searched_hash_system_1, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", vector<long long int>{5}, false);
     cout << "result: " << result_system_1 << endl;
+
+    // output:
+    // ------------------- htwg-dima-task-2 -------------------
+    // Possible combinations in System 1 (5 signs):    916132832
+    // Possible combinations in System 2 (10 signs):   839299365868340224
+    // Possible combinations in System 3 (5-10 signs): 853058371851163264
+    // try to crack system 1 (5 signs) with SHA-1: 7738d1909d7dee18196f733d0d508d871d05cc80
+    // current code: WmI42 | progress: 88.5679%         result: MsI42
+
 
     // crack system 2
     // cout << "try to crack system 2 (10 signs) with SHA-1: " << searched_hash_system_2 << endl;

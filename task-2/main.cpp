@@ -9,6 +9,16 @@
 using namespace std;
 
 
+long long int pow_with_more_power(long long int base, long long int exponent)
+{
+    long long int output = 1;
+    for (long long int i = 0; i < exponent; i++)
+    {
+        output *= base;
+    }
+    return output;
+}
+
 string get_code_from_number(long long int number, string alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", long long int allowed_length = 5)
 {
     string output = "";
@@ -33,7 +43,7 @@ string get_code_from_number_with_variable_length(
     long long int length = 0;
     for (long long int i = 0; i < different_lengthes; i++)
     {
-        long long int current_length_combinations = pow(alphabet.length(), allowed_lengthes[i]);
+        long long int current_length_combinations = pow_with_more_power(alphabet.length(), allowed_lengthes[i]);
         if (number < current_length_combinations)
         {
             length = allowed_lengthes[i];
@@ -52,10 +62,10 @@ string get_code_from_number_with_variable_length(
 long long int count_combinations(string alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", vector<long long int> allowed_lengthes = {5, 6, 7, 8, 9, 10})
 {
     long long int output = 0;
-    long long int different_lengthes = allowed_lengthes.size();
+    int different_lengthes = allowed_lengthes.size();
     for (long long int i = 0; i < different_lengthes; i++)
     {
-        output += pow(alphabet.length(), allowed_lengthes[i]);
+        output += pow_with_more_power(alphabet.length(), allowed_lengthes[i]);
     }
     return output;
 }
@@ -150,7 +160,7 @@ int main(int, const char **)
     // ------------------- htwg-dima-task-2 -------------------
     // Possible combinations in System 1 (5 signs):    916132832
     // Possible combinations in System 2 (10 signs):   839299365868340224
-    // Possible combinations in System 3 (5-10 signs): 853058371851163264
+    // Possible combinations in System 3 (5-10 signs): 853058371851163296
     // try to crack system 1 (5 signs) with SHA-1: 7738d1909d7dee18196f733d0d508d871d05cc80
     // current code: WmI42 | progress: 88.5679%         result: MsI42
     // took 30min approx.

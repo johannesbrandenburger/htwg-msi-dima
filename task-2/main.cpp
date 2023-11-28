@@ -79,6 +79,8 @@ string try_crack_hash(
 {
     SHA1 checksum;
     long long int combinations = count_combinations(alphabet, allowed_lengthes);
+    time_t start_time = time(0);
+
     for (long long int i = 0; i < combinations; i++)
     {
         string code = get_code_from_number_with_variable_length(i, alphabet, allowed_lengthes);
@@ -93,7 +95,16 @@ string try_crack_hash(
         // every 100000th try print the current code and the progress
         if (i % 100000 == 0)
         {
-            cout << "\r" << "current code: " << code << " | progress: " << ((float)i / (float)combinations * 100) << "%         ";
+
+            // calculate progress
+            float progress = ((float)i / (float)combinations);
+
+            // calculate remaining minutes
+            float remaining_minutes = (time(0) - start_time) / progress;
+            remaining_minutes -= (time(0) - start_time);
+            remaining_minutes /= 60;
+
+            cout << "\r" << "current code: " << code << " | progress: " << (progress * 100) << "% | remaining minutes: " << remaining_minutes << "                    ";
             cout.flush();
         }
 
@@ -151,10 +162,19 @@ int main(int, const char **)
     string searched_hash_system_2 = "e39156538e3e7193fdf6356469fa7414d078f97e";
     string searched_hash_system_3 = "0a3bd07f4152f7f7a9655acfbeb8b4f08bc5861a";
 
+    // crack system 0 (demo)
+    string searched_code = "msi0";
+    SHA1 checksum;
+    checksum.update(searched_code);
+    string searched_hash_system_0 = checksum.final();
+    cout << "try to crack demosystem (4 signs) with SHA-1: " << searched_hash_system_0 << endl;
+    string result_system_0 = try_crack_hash(searched_hash_system_0, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", vector<long long int>{4}, false);
+    cout << "result: " << result_system_0 << endl;
+
     // crack system 1
-    cout << "try to crack system 1 (5 signs) with SHA-1: " << searched_hash_system_1 << endl;
-    string result_system_1 = try_crack_hash(searched_hash_system_1, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", vector<long long int>{5}, false);
-    cout << "result: " << result_system_1 << endl;
+    // cout << "try to crack system 1 (5 signs) with SHA-1: " << searched_hash_system_1 << endl;
+    // string result_system_1 = try_crack_hash(searched_hash_system_1, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", vector<long long int>{5}, false);
+    // cout << "result: " << result_system_1 << endl;
 
     // output:
     // ------------------- htwg-dima-task-2 -------------------

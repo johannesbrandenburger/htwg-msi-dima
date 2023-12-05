@@ -71,8 +71,10 @@ string get_code_from_number_with_variable_length(
 }
 
 
-long long int count_combinations(string alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", vector<long long int> allowed_lengthes = {5, 6, 7, 8, 9, 10})
-{
+long long int count_combinations(
+    string alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+    vector<long long int> allowed_lengthes = {5, 6, 7, 8, 9, 10}
+) {
     long long int output = 0;
     int different_lengthes = allowed_lengthes.size();
     for (long long int i = 0; i < different_lengthes; i++)
@@ -185,15 +187,15 @@ int main(int, const char **)
     string searched_code = "msi0";
     unsigned char hash[SHA_DIGEST_LENGTH];
     SHA1((unsigned char*)searched_code.c_str(), searched_code.length(), hash);
-    string searched_hash_system_0 = get_hex_representation(hash, SHA_DIGEST_LENGTH) + "0";
+    string searched_hash_system_0 = get_hex_representation(hash, SHA_DIGEST_LENGTH);
     cout << "try to crack demosystem (4 signs) with SHA-1: " << searched_hash_system_0 << endl;
     string result_system_0 = try_crack_hash(searched_hash_system_0, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", vector<long long int>{4}, false);
     cout << "result: " << result_system_0 << endl;
 
     // crack system 1
-    // cout << "try to crack system 1 (5 signs) with SHA-1: " << searched_hash_system_1 << endl;
-    // string result_system_1 = try_crack_hash(searched_hash_system_1, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", vector<long long int>{5}, false);
-    // cout << "result: " << result_system_1 << endl;
+    cout << "try to crack system 1 (5 signs) with SHA-1: " << searched_hash_system_1 << endl;
+    string result_system_1 = try_crack_hash(searched_hash_system_1, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", vector<long long int>{5}, false);
+    cout << "result: " << result_system_1 << endl; 
 
     // output:
     // ------------------- htwg-dima-task-2 -------------------
@@ -201,10 +203,9 @@ int main(int, const char **)
     // Possible combinations in System 2 (10 signs):   839299365868340224
     // Possible combinations in System 3 (5-10 signs): 853058371851163296
     // try to crack system 1 (5 signs) with SHA-1: 7738d1909d7dee18196f733d0d508d871d05cc80
-    // current code: WmI42 | progress: 88.5679% | remaining minutes: 7.273
+    // current code: WmI42 | progress: 88.5679% | remaining minutes to test all combinations: 1.96627                      
+    // took 15min to crack the hash
     // result: MsI42
-    // took 30min approx.↑
-
 
     // crack system 2
     // cout << "try to crack system 2 (10 signs) with SHA-1: " << searched_hash_system_2 << endl;

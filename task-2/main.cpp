@@ -8,6 +8,7 @@
 #include <cmath>
 using namespace std;
 
+
 string get_hex_representation(const unsigned char *Bytes, size_t Length) {
     string ret(Length*2, '\0');
     const char *digits = "0123456789abcdef";
@@ -18,6 +19,7 @@ string get_hex_representation(const unsigned char *Bytes, size_t Length) {
     return ret;
 }
 
+
 long long int pow_with_more_power(long long int base, long long int exponent)
 {
     long long int output = 1;
@@ -27,6 +29,7 @@ long long int pow_with_more_power(long long int base, long long int exponent)
     }
     return output;
 }
+
 
 string get_code_from_number(long long int number, string alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", long long int allowed_length = 5)
 {
@@ -78,6 +81,7 @@ long long int count_combinations(string alphabet = "abcdefghijklmnopqrstuvwxyzAB
     }
     return output;
 }
+
 
 string try_crack_hash(
     string searched_hash,
@@ -131,7 +135,8 @@ string try_crack_hash(
     return "";
 }
 
-void test_all_helper_functions() {
+void test_all_helper_functions()
+{
     assert(get_code_from_number(0) == "aaaaa");
     assert(get_code_from_number(1) == "baaaa");
     assert(get_code_from_number(count_combinations("abc", vector<long long int>{5}) - 1, "abc", 5) == "ccccc");
@@ -162,7 +167,6 @@ void test_all_helper_functions() {
     assert(result == searched_code);
 }
 
-
 int main(int, const char **)
 {
     test_all_helper_functions();
@@ -178,18 +182,18 @@ int main(int, const char **)
     string searched_hash_system_3 = "0a3bd07f4152f7f7a9655acfbeb8b4f08bc5861a";
 
     // crack system 0 (demo)
-    // string searched_code = "msi0";
-    // SHA1 checksum;
-    // checksum.update(searched_code);
-    // string searched_hash_system_0 = checksum.final();
-    // cout << "try to crack demosystem (4 signs) with SHA-1: " << searched_hash_system_0 << endl;
-    // string result_system_0 = try_crack_hash(searched_hash_system_0, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", vector<long long int>{4}, false);
-    // cout << "result: " << result_system_0 << endl;
+    string searched_code = "msi0";
+    unsigned char hash[SHA_DIGEST_LENGTH];
+    SHA1((unsigned char*)searched_code.c_str(), searched_code.length(), hash);
+    string searched_hash_system_0 = get_hex_representation(hash, SHA_DIGEST_LENGTH) + "0";
+    cout << "try to crack demosystem (4 signs) with SHA-1: " << searched_hash_system_0 << endl;
+    string result_system_0 = try_crack_hash(searched_hash_system_0, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", vector<long long int>{4}, false);
+    cout << "result: " << result_system_0 << endl;
 
     // crack system 1
-    cout << "try to crack system 1 (5 signs) with SHA-1: " << searched_hash_system_1 << endl;
-    string result_system_1 = try_crack_hash(searched_hash_system_1, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", vector<long long int>{5}, false);
-    cout << "result: " << result_system_1 << endl;
+    // cout << "try to crack system 1 (5 signs) with SHA-1: " << searched_hash_system_1 << endl;
+    // string result_system_1 = try_crack_hash(searched_hash_system_1, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", vector<long long int>{5}, false);
+    // cout << "result: " << result_system_1 << endl;
 
     // output:
     // ------------------- htwg-dima-task-2 -------------------

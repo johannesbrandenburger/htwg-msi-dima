@@ -4,8 +4,8 @@ RM    = rm -f
 
 all: main
 
-main: main.cpp sha1.hpp
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -Wall -Wextra -std=c++11 -o $@ main.cpp
+main: main.cpp
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -Wall -Wextra -std=c++11 -o $@ main.cpp -lssl -lcrypto
 
 clean:
 	$(RM) main

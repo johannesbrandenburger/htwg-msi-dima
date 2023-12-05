@@ -1,4 +1,4 @@
-#include "sha1.hpp"
+#include <openssl/sha.h>
 #include <string>
 #include <array>
 #include <iostream>
@@ -8,6 +8,15 @@
 #include <cmath>
 using namespace std;
 
+string get_hex_representation(const unsigned char *Bytes, size_t Length) {
+    string ret(Length*2, '\0');
+    const char *digits = "0123456789abcdef";
+    for(size_t i = 0; i < Length; ++i) {
+        ret[i*2]   = digits[(Bytes[i]>>4) & 0xf];
+        ret[i*2+1] = digits[ Bytes[i]     & 0xf];
+    }
+    return ret;
+}
 
 long long int pow_with_more_power(long long int base, long long int exponent)
 {
@@ -77,19 +86,22 @@ string try_crack_hash(
     bool debug = false
     )
 {
-    SHA1 checksum;
     long long int combinations = count_combinations(alphabet, allowed_lengthes);
     time_t start_time = time(0);
+    unsigned char hash[SHA_DIGEST_LENGTH];
+    string hash_string = "";
 
     for (long long int i = 0; i < combinations; i++)
     {
         string code = get_code_from_number_with_variable_length(i, alphabet, allowed_lengthes);
-        checksum.update(code);
-        string hash = checksum.final();
+        
+        // create the hash
+        SHA1((unsigned char*)code.c_str(), code.length(), hash);
+        hash_string = get_hex_representation(hash, SHA_DIGEST_LENGTH);
         
         if (debug)
         {
-            cout << "try code: " << code << " hash: " << hash << " ==? " << searched_hash << endl;
+            cout << "try code: " << code << " hash: " << hash_string << " ==? " << searched_hash << endl;
         }
 
         // every 100000th try print the current code and the progress
@@ -104,12 +116,15 @@ string try_crack_hash(
             remaining_minutes -= (time(0) - start_time);
             remaining_minutes /= 60;
 
-            cout << "\r" << "current code: " << code << " | progress: " << (progress * 100) << "% | remaining minutes: " << remaining_minutes << "                    ";
+            cout << "\r" << "current code: " << code << " | progress: " << (progress * 100) << "% | remaining minutes to test all combinations: " << remaining_minutes << "                    ";
             cout.flush();
         }
 
-        if (searched_hash == hash)
+        if (searched_hash == hash_string)
         {
+
+            // print out the minutes it took to crack the hash
+            cout << endl << "took " << (time(0) - start_time) / 60 << "min to crack the hash" << endl;
             return code;
         }
     }
@@ -140,9 +155,9 @@ void test_all_helper_functions() {
 
     // test the bruteforce function
     string searched_code = "ababc";
-    SHA1 checksum;
-    checksum.update(searched_code);
-    string searched_hash = checksum.final();
+    unsigned char hash[SHA_DIGEST_LENGTH];
+    SHA1((unsigned char*)searched_code.c_str(), searched_code.length(), hash);
+    string searched_hash = get_hex_representation(hash, SHA_DIGEST_LENGTH);
     string result = try_crack_hash(searched_hash, "abc", vector<long long int>{5}, false);
     assert(result == searched_code);
 }
@@ -153,9 +168,9 @@ int main(int, const char **)
     test_all_helper_functions();
 
     cout << endl << "------------------- htwg-dima-task-2 -------------------" << endl;
-    cout << " Possible combinations in System 1 (5 signs):    " << count_combinations("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", vector<long long int>{5}) << endl;
-    cout << " Possible combinations in System 2 (10 signs):   " << count_combinations("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", vector<long long int>{10}) << endl;
-    cout << " Possible combinations in System 3 (5-10 signs): " << count_combinations("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", vector<long long int>{5, 6, 7, 8, 9, 10}) << endl;
+    cout << "Possible combinations in System 1 (5 signs):    " << count_combinations("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", vector<long long int>{5}) << endl;
+    cout << "Possible combinations in System 2 (10 signs):   " << count_combinations("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", vector<long long int>{10}) << endl;
+    cout << "Possible combinations in System 3 (5-10 signs): " << count_combinations("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", vector<long long int>{5, 6, 7, 8, 9, 10}) << endl;
 
     // searched hash values
     string searched_hash_system_1 = "7738d1909d7dee18196f733d0d508d871d05cc80";

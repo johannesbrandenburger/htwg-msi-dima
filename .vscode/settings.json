@@ -3,6 +3,7 @@
     "files.associations": {
         "*.js": "javascript",
         "iostream": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "cmath": "cpp"
     }
 }

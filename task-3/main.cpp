@@ -30,6 +30,9 @@ long long modexp(long long b, long long n, long long m) {
 
 int main() {
 
+    cout << "------------------------ Task 3-------------------------" << endl;
+    cout << "------------------ calculate examples ------------------" << endl;
+
     cout << "5^99 mod 11 = " << modexp(5, 99, 11) << endl;
     cout << "50^529 mod 13 = " << modexp(50, 529, 13) << endl;
     cout << "50^999 mod 17 = " << modexp(50, 999, 17) << endl;
@@ -46,10 +49,12 @@ int main() {
     int modulus = 17;
     float timeForOwnImplementation = 0;
     float timeForBuiltInFunction = 0;
-    long long iterations = 100000000;
+    long long iterations = 500000000;
     long long power = 0;
     long long builtInResult = 0;
     long long ownResult = 0;
+
+    cout << "--- calculate " << base << "^" << exponent << " mod " << modulus << " with " << iterations << " iterations ---" << endl;
 
     start = clock();
     for (int i = 0; i < iterations; i++) {
